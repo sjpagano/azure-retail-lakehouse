@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=75"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "retail-lakehouse"
+version = "1.0.0"
+description = "Azure retail pipeline with executable quality gates and documented governance"
+requires-python = ">=3.11"
+dependencies = ["azure-functions>=1.21,<2", "azure-identity>=1.19,<2", "azure-storage-blob>=12.24,<13"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8,<9", "pytest-cov>=6,<8", "ruff>=0.9,<1"]
+
+[project.scripts]
+retail-pipeline = "retail_pipeline.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["retail_pipeline*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q --cov=retail_pipeline --cov=function_app --cov-report=term-missing --cov-report=xml --cov-report=html --cov-fail-under=85"
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]

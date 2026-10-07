@@ -1,0 +1,7 @@
+order_id,order_date,customer_email,region,sku,quantity,unit_price,currency
+ORD-001,2026-09-30,alex@example.test,NA,BOOK-01,2,12.50,USD
+ORD-001,2026-09-30,blair@example.test,NA,MUG-01,1,8.99,USD
+ORD-003,2026-09-29,casey@example.test,EU,BOOK-01,-3,10.00,EUR
+ORD-004,2026-09-29,not-an-email,EU,PEN-01,4,1.257,EUR
+ORD-005,2026-08-01,ellis@example.test,UNKNOWN,MUG-01,2,7.50,USD
+ORD-006,2026-09-30,frankie@example.test,EU,BOOK-02,1,15.00,GBP

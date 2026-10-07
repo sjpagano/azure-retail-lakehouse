@@ -1,0 +1,31 @@
+{
+  "accepted_rows": 1,
+  "as_of": "2026-09-30",
+  "batch_id": "97798c5d72b4b35494d47635c1c03009f7f5ab8e894a9aae2ae4bc6cb299008b",
+  "contract_version": "1.0.0",
+  "input_rows": 6,
+  "input_sha256": "88e79abc5803416ee1b732125b21fb66dc43972515c1c279634113425bbcb785",
+  "invalid_ratio": "0.8333333333333333333333333333",
+  "lineage": {
+    "input": "bronze/sales-dirty.csv",
+    "outputs": [
+      "quality/97798c5d72b4b35494d47635c1c03009f7f5ab8e894a9aae2ae4bc6cb299008b.json",
+      "quarantine/97798c5d72b4b35494d47635c1c03009f7f5ab8e894a9aae2ae4bc6cb299008b.jsonl"
+    ]
+  },
+  "policy_sha256": "9ecdda627fe3d953c01d533c130628f0639f6c0d422f66deaae404db605a29f4",
+  "reconciliation_cents": {
+    "GBP": 1500
+  },
+  "rejected_rows": 5,
+  "rule_counts": {
+    "date_freshness": 1,
+    "email_format": 1,
+    "price_precision_range": 1,
+    "quantity_range": 1,
+    "region_enum": 1,
+    "unique_order_id": 2
+  },
+  "status": "rejected",
+  "transform_version": "1.0.0"
+}

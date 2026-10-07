@@ -1,0 +1,29 @@
+{
+  "accepted_rows": 6,
+  "as_of": "2026-09-30",
+  "batch_id": "1e41a29dc029cc2b9acd79626d236b5c635d63fe7d090367aa62ef302595ae4e",
+  "contract_version": "1.0.0",
+  "input_rows": 6,
+  "input_sha256": "694906db9dab8913d21c5ab372e513d2cc7eeecdb9735aca43a06e4aba831501",
+  "invalid_ratio": "0",
+  "lineage": {
+    "input": "bronze/sales-clean.csv",
+    "outputs": [
+      "quality/1e41a29dc029cc2b9acd79626d236b5c635d63fe7d090367aa62ef302595ae4e.json",
+      "quarantine/1e41a29dc029cc2b9acd79626d236b5c635d63fe7d090367aa62ef302595ae4e.jsonl",
+      "silver/1e41a29dc029cc2b9acd79626d236b5c635d63fe7d090367aa62ef302595ae4e.jsonl",
+      "gold/1e41a29dc029cc2b9acd79626d236b5c635d63fe7d090367aa62ef302595ae4e.jsonl",
+      "manifests/1e41a29dc029cc2b9acd79626d236b5c635d63fe7d090367aa62ef302595ae4e.json"
+    ]
+  },
+  "policy_sha256": "9ecdda627fe3d953c01d533c130628f0639f6c0d422f66deaae404db605a29f4",
+  "reconciliation_cents": {
+    "EUR": 3500,
+    "GBP": 1500,
+    "USD": 4899
+  },
+  "rejected_rows": 0,
+  "rule_counts": {},
+  "status": "passed",
+  "transform_version": "1.0.0"
+}

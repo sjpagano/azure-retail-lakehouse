@@ -1,0 +1,4 @@
+{"currency":"EUR","order_date":"2026-09-29","orders":2,"region":"EU","revenue_cents":3500,"units":7}
+{"currency":"USD","order_date":"2026-09-30","orders":1,"region":"APAC","revenue_cents":1500,"units":2}
+{"currency":"GBP","order_date":"2026-09-30","orders":1,"region":"EU","revenue_cents":1500,"units":1}
+{"currency":"USD","order_date":"2026-09-30","orders":2,"region":"NA","revenue_cents":3399,"units":3}

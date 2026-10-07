@@ -1,0 +1,17 @@
+.venv/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+.coverage
+coverage.xml
+test-results.xml
+htmlcov/
+out/
+dist/
+build/
+local.settings.json
+.env
+infra/main.json
+infra/main.parameters.json
+*.zip
