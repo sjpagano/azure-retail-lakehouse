@@ -1,9 +1,13 @@
 # Azure deployment and operations runbook
 
-Status: Bicep compilation and local engine tests are verified. **These cloud
-steps have not been executed for this project.** Tenant policy, regional capacity,
-provider support, and RBAC propagation can affect deployment. Record a successful
-cloud acceptance run before presenting the project as deployed.
+Status: **deployed and end-to-end smoke-tested by the repository owner on
+October 7, 2026**. The [deployment evidence](../evidence/azure-deployment.md)
+records the tested commit, run IDs, six screenshots, quality decisions, retry
+publication counts, and revenue reconciliation. The runbook below reflects the
+dedicated `adf` Function-key bootstrap used in that walkthrough. Additional
+security and operational checks listed here were not all captured in the smoke
+test. Tenant policy, regional capacity, and RBAC propagation can still affect
+new deployments; do not treat historical success as current availability.
 
 ## Prerequisites and budget
 
@@ -77,7 +81,7 @@ can take time to propagate.
 
 ## 3. Bootstrap invocation key and uploader access
 
-ADF needs the Function's generated key, available only after code deployment.
+ADF needs a Function key created after code deployment.
 The following explicit human grants are **not** part of the runtime template.
 Have an authorized administrator approve/create them at these narrow scopes:
 
@@ -87,28 +91,39 @@ CALL_VAULT_ID=$(az keyvault show -g "$RETAIL_RG" -n "$CALL_VAULT" --query id -o 
 az role assignment create --assignee-object-id "$OWNER_OBJECT_ID" --assignee-principal-type User \
   --role 'Storage Blob Data Contributor' --scope "$LAKE_ID/blobServices/default/containers/bronze" --output none
 az role assignment create --assignee-object-id "$OWNER_OBJECT_ID" --assignee-principal-type User \
+  --role 'Storage Blob Data Reader' --scope "$LAKE_ID" --output none
+az role assignment create --assignee-object-id "$OWNER_OBJECT_ID" --assignee-principal-type User \
   --role 'Key Vault Secrets Officer' --scope "$CALL_VAULT_ID" --output none
 ```
 
-Wait for RBAC to propagate. Transfer the function-level default key without
+The account-scoped Reader grant is for inspecting this synthetic demo's lake;
+use narrower container scopes when required by your access policy. Wait for RBAC
+to propagate. Create a dedicated function-level `adf` key and transfer it without
 printing it or placing its value in process arguments:
 
 ```bash
-umask 077
-KEY_FILE=$(mktemp)
-trap 'rm -f -- "$KEY_FILE"' EXIT
-az functionapp function keys list -g "$RETAIL_RG" -n "$APP" \
-  --function-name process_sales --query default -o tsv | tr -d '\r\n' > "$KEY_FILE"
-test -s "$KEY_FILE" || { echo 'No function key returned'; exit 1; }
-az keyvault secret set --vault-name "$CALL_VAULT" --name quality-function-key \
-  --file "$KEY_FILE" --output none
-rm -f -- "$KEY_FILE"
-trap - EXIT
+(
+  set -euo pipefail
+  set +x
+  umask 077
+  az functionapp function keys set -g "$RETAIL_RG" -n "$APP" \
+    --function-name process_sales --key-name adf --output none
+  KEY_FILE=$(mktemp)
+  trap 'rm -f -- "$KEY_FILE"' EXIT
+  az functionapp function keys list -g "$RETAIL_RG" -n "$APP" \
+    --function-name process_sales --query adf -o tsv | tr -d '\r\n' > "$KEY_FILE"
+  test -s "$KEY_FILE" || { echo 'No function key returned'; exit 1; }
+  az keyvault secret set --vault-name "$CALL_VAULT" --name quality-function-key \
+    --file "$KEY_FILE" --output none
+)
 ```
 
 Run these steps in a trusted shell with tracing disabled. Remove temporary human
 grants after the demo if they are no longer needed. The Function key is kept in a
 separate vault from the pseudonym key; ADF cannot read the latter.
+This is an initial bootstrap: rerunning `keys set` without a supplied value can
+rotate the named key, so coordinate the vault update rather than rerunning it
+casually during active use.
 
 ## 4. Run clean and rejected cloud acceptance scenarios
 
@@ -126,11 +141,18 @@ Wait for a terminal status via ADF Monitor. Clean should succeed. Repeat with
 there should still be exactly one manifest for that source/context.
 
 For output inspection, obtain approved read access to the output containers
-(for this synthetic demo only, an account-scoped Blob Data Reader grant is a
-convenient temporary option). Confirm:
+(the bootstrap above includes a temporary demo Reader grant). Core functional
+checks, captured in the [October 7 evidence](../evidence/azure-deployment.md):
 
 - Clean: six accepted, zero rejected; gold USD4899/EUR3500/GBP1500 cents.
-- Dirty: one accepted, five rejected; report and quarantine but no manifest.
+- Dirty: one valid row, five rejected; `DQ_GATE_REJECTED` after successful evaluation.
+- Retry: succeeded; final counts are two quality reports and one file each in
+  manifests, silver, and gold for these fixtures.
+
+Additional checks before a broader operational/security validation claim
+(not established by the six captured screenshots):
+
+- Inspect rejected-row quarantine references and manifest-to-source contents.
 - No raw email in silver, gold, reports, quarantine, or application log messages.
 - Lake anonymous access fails; ADF cannot retrieve the worker HMAC secret.
 - The Function's managed identity reads bronze but cannot write to it.
@@ -139,6 +161,17 @@ convenient temporary option). Confirm:
 The cloud source path includes `demo/`, so its batch ID differs from the local
 fixture path. Save sanitized run IDs, screenshots, commit SHA, and outcomes in
 an evidence note. Do not publish raw run outputs containing credentials.
+
+## Record acceptance evidence
+
+Use [evidence/azure-deployment.md](../evidence/azure-deployment.md) as the format:
+record the tested commit, capture date, scenario-to-run-ID mapping, expected and
+observed results, source screenshots, and any unverified checks. Keep local demo
+artifacts separate from cloud results. Confirm totals from the actual gold blob,
+not just the quality report. Container counts demonstrate the observed final
+publication count, not byte-for-byte immutability or global exactly-once delivery.
+After teardown, record that the resources were removed; do not infer cleanup
+from the age of a screenshot.
 
 ## Operations and recovery
 

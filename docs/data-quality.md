@@ -84,3 +84,6 @@ asserts publication behavior. `pytest` adds threshold boundaries, every field
 rule, UTF-8/BOM handling, byte/row limits, deterministic identity, path traversal,
 conflicting writes, HTTP validation, and simulated partial-upload failure.
 The Azure adapter is mocked: this suite does not prove cloud RBAC or deployment.
+Separate [owner-run Azure evidence](../evidence/azure-deployment.md) documents
+the deployed clean, rejected, and retry scenarios and gold/report reconciliation.
+It does not replace the wider security and operational checks in the runbook.

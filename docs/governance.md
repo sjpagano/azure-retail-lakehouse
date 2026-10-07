@@ -104,8 +104,12 @@ Private endpoints/firewalls, Entra invocation auth, Purview discovery, protected
 branches and reviewers, cross-batch deduplication, alert rules, key-rotation
 automation, deletion/legal-hold workflows, dependency lockfiles, and load tests
 remain future work. Public endpoints still require authentication, but no
-network perimeter is claimed. Compile validation does not prove a working Azure
-deployment; complete the runbook's cloud acceptance checks before claiming one.
+network perimeter is claimed. The owner completed the
+[documented Azure smoke test](../evidence/azure-deployment.md) on October 7, 2026.
+That evidence validates the captured functional scenarios, not every governance
+control. Cloud access-denial tests, exhaustive silver/log privacy inspection,
+retention expiry, and key-rotation verification remain separate checks in the
+[runbook](azure-runbook.md). Compile validation alone is not deployment evidence.
 
 References: [Key Vault RBAC](https://learn.microsoft.com/en-us/azure/key-vault/general/rbac-guide),
 [storage lifecycle management](https://learn.microsoft.com/en-us/azure/storage/blobs/lifecycle-management-overview),

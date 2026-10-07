@@ -8,9 +8,30 @@ and publish daily revenue aggregates only when the quality gate passes.
 
 The same Python engine runs locally and inside an Azure Function. Bicep defines
 Azure Data Factory orchestration, ADLS Gen2, managed identities, Key Vault,
-audit diagnostics, and retention policies. **The local pipeline is tested; the
-Azure infrastructure is compile-validated, not deployed or cloud-tested.** No
-subscription is needed to try it. All included customer records are synthetic.
+audit diagnostics, and retention policies. **Deployed and end-to-end smoke-tested
+in Azure on October 7, 2026**, with six screenshots documenting the core demo
+acceptance checks. No subscription is needed for the local demo. All included
+customer records are synthetic.
+
+## Verified Azure deployment
+
+The repository owner deployed and tested commit
+[`2932f92`](https://github.com/sjpagano/azure-retail-lakehouse/commit/2932f92f1123044f479a8f187389daf1d0bc6e30).
+The [deployment evidence and screenshot gallery](evidence/azure-deployment.md)
+record the resources, exact run IDs, observed results, and verification limits.
+
+| Core acceptance check | Observed Azure result |
+|---|---|
+| Clean-batch processing | Pipeline succeeded; 6 accepted, 0 rejected |
+| Invalid-data rejection | Function evaluation succeeded; `RejectBatch` failed with `DQ_GATE_REJECTED`; 1 valid row, 5 rejected |
+| Retry without extra published files | Clean retry succeeded; final counts were 2 quality reports and 1 file each in manifests, silver, and gold |
+| Revenue reconciliation | Gold records match the clean quality report: EUR 35.00, GBP 15.00, USD 48.99 |
+
+All core demo scenarios above have captured evidence. This is a historical
+portfolio smoke test, not a production-readiness, compliance, or security-audit
+claim. Cloud access-denial tests, exhaustive silver/log privacy inspection,
+retention expiry, and load/fault testing are not evidenced by these screenshots.
+Current live availability and resource cleanup status are not recorded.
 
 ## Try the entire pipeline locally
 
@@ -87,7 +108,9 @@ claim. See [design decisions](docs/architecture.md).
 - [Governance and catalog](docs/governance.md): classification, ownership,
   access matrix, lineage, retention, secret rotation, and production gaps.
 - [Azure deployment and operations](docs/azure-runbook.md): prerequisites,
-  deployment, Function-key bootstrap, two end-to-end acceptance runs, cleanup.
+  deployment, Function-key bootstrap, clean/rejected/retry acceptance checks, cleanup.
+- [Azure deployment evidence](evidence/azure-deployment.md): dated test record,
+  six original screenshots, run IDs, and per-currency reconciliation.
 - [Learning guide](docs/learning-guide.md): demonstrations, extensions, interview
   questions, and resume wording with no invented business impact.
 
@@ -97,7 +120,9 @@ The initial local run passed **54 tests with 99.12% line coverage (226/228)**.
 The coverage gate is 85%. Tests execute real parsing, file publication, CLI
 behavior, and HTTP-handler logic; Azure SDK calls are mocked. GitHub Actions runs
 pytest, Ruff lint/format checks, deployment packaging, and Bicep compilation.
-It uploads test/coverage artifacts and does not create Azure resources.
+It uploads test/coverage artifacts and does not create Azure resources. The
+separate owner-run Azure smoke test is documented in the deployment evidence;
+the automated test suite still uses mocked Azure SDK calls.
 
 ```bash
 ruff check .

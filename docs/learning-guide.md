@@ -9,7 +9,8 @@
 4. Show the simulated interrupted publication test. Explain why consumers use
    manifests instead of listing every gold object.
 5. Walk through the RBAC matrix and the two vaults. Explain which parts are
-   implemented locally, compile-validated, mocked, or still cloud-unverified.
+   implemented locally, compile-validated, exercised in the
+   [Azure smoke test](../evidence/azure-deployment.md), or still cloud-unverified.
 
 ## Exercises to implement yourself
 
@@ -18,7 +19,8 @@
   reprocessing cannot double-count a business order across batches.
 - Add a latency check using an ingestion timestamp distinct from `as_of`.
 - Add a manifest-aware SQL/DuckDB reader and prove per-currency reconciliation.
-- Deploy in a disposable Azure resource group and capture clean/failing/retry
+- Reproduce the documented deployment in a disposable Azure resource group and
+  add cloud access-denial/privacy checks to the existing clean/failing/retry
   acceptance evidence. Measure actual cost before proposing a schedule.
 - Add alerts and an incident drill, then implement secret rotation with tests.
 
@@ -36,10 +38,12 @@ After running and understanding the project:
 
 > Built a Python retail batch pipeline with schema and row-level quality gates,
 > HMAC pseudonymization, quarantine reports, content-addressed publication, and
-> 54 automated tests; authored Azure Data Factory/Functions/ADLS infrastructure
-> as code and documented RBAC, lineage, retention, and operational recovery.
+> 54 automated tests; deployed and smoke-tested Azure Data Factory/Functions/ADLS
+> infrastructure, verified quality rejection, retry publication counts, and
+> per-currency revenue reconciliation, and documented governance and recovery.
 
-Only after completing actual cloud acceptance tests may you replace "authored"
-with "deployed and validated." Do not claim production traffic, reduced costs,
-regulatory compliance, or a revenue impact without measured evidence. Use the
+The deployment wording is backed by the owner's
+[October 7, 2026 evidence](../evidence/azure-deployment.md), which identifies the
+tested commit and the limits of the checks. Do not claim production traffic,
+reduced costs, regulatory compliance, or a revenue impact without measured evidence. Use the
 project to learn and modify the design, not just to repeat a generated explanation.

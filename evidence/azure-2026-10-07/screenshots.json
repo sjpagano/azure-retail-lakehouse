@@ -1,0 +1,36 @@
+{
+  "capture_date_from_owner_filenames": "2026-10-07",
+  "provenance": "Owner-supplied screenshots copied unchanged; SHA-256 verified against source files.",
+  "screenshots": [
+    {
+      "original_filename": "Screenshot 2026-10-07 124248.png",
+      "file": "01-run-commands.png",
+      "sha256": "1a8e3838e27de2f0d83cd21669871adb5848e25ac43b425683ef951f75711886"
+    },
+    {
+      "original_filename": "Screenshot 2026-10-07 124259.png",
+      "file": "02-run-statuses.png",
+      "sha256": "0b475deee5cb792ca2deeb315fc1d85dfcdbb4f41b55d950ed6e72bb5fb0ff72"
+    },
+    {
+      "original_filename": "Screenshot 2026-10-07 124238.png",
+      "file": "03-quality-gate-rejection.png",
+      "sha256": "2c2f164c113e328870cd6748b610e786776db9e749006536224fa204b71d3057"
+    },
+    {
+      "original_filename": "Screenshot 2026-10-07 124229.png",
+      "file": "04-output-counts.png",
+      "sha256": "6fb1d249e47ae45770f398fa48327b22267c425dffd7c1fb274f59cc3d727e16"
+    },
+    {
+      "original_filename": "Screenshot 2026-10-07 125008.png",
+      "file": "05-quality-reports.png",
+      "sha256": "de0b8af209f79021cba9772109acbbb3409b41919a3a96d377bc8fb8842255d8"
+    },
+    {
+      "original_filename": "Screenshot 2026-10-07 125029.png",
+      "file": "06-gold-output.png",
+      "sha256": "a901590ae819727b1424fb0ee739711e65d0cabe12e4a176e2ddbe7b689f9940"
+    }
+  ]
+}
